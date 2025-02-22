@@ -14,6 +14,7 @@ import { phaseTicketStore } from '../../../store/phase';
 import {
   ActionButton,
   CopyButtonGroup,
+  TicketSnippetContainer,
   TicketButtonGroup
 } from '../../../people/widgetViews/workspace/style';
 import {
@@ -53,6 +54,7 @@ interface TicketEditorProps {
   workspaceUUID: string;
   selectedTickets: Record<string, boolean>;
   onSelectTicket: (ticketId: string) => void;
+  collapsed?: boolean;
 }
 
 const SwitcherContainer = styled.div`
@@ -98,6 +100,30 @@ const VersionSelect = styled(Select)`
   min-width: auto;
   height: 40px !important;
   margin-bottom: 9px;
+
+  @media (max-width: 1440px) {
+    max-width: 190px;
+  }
+
+  @media (max-width: 1366px) {
+    max-width: 160px;
+  }
+
+  @media (max-width: 1280px) {
+    max-width: 160px;
+  }
+
+  @media (max-width: 1024px) {
+    max-width: 130px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 80px;
+  }
 `;
 
 const MaterialIconStyled = styled(MaterialIcon)`
@@ -184,7 +210,8 @@ const TicketEditor = observer(
     workspaceUUID,
     logs,
     selectedTickets,
-    onSelectTicket
+    onSelectTicket,
+    collapsed
   }: TicketEditorProps) => {
     const [toasts, setToasts] = useState<Toast[]>([]);
     const [versions, setVersions] = useState<number[]>([]);
@@ -595,7 +622,7 @@ const TicketEditor = ({ initialAmount }) => {
                   </Option>
                 ))}
               </VersionSelect>
-              <BountyOptionsWrap>
+              <BountyOptionsWrap $collapsed={collapsed}>
                 <MaterialIconStyled
                   icon={'more_horiz'}
                   className="MaterialIcon"
@@ -625,7 +652,6 @@ const TicketEditor = ({ initialAmount }) => {
                 )}
               </BountyOptionsWrap>
               <CopyButtonGroup>
-                <SnippetDropdown items={filteredSnippets} onSelect={handleSnippetSelect} />
                 <SwitcherContainer>
                   <SwitcherButton
                     isActive={activeMode === 'preview'}
@@ -673,6 +699,9 @@ const TicketEditor = ({ initialAmount }) => {
                   </Option>
                 ))}
               </VersionSelect>
+              <TicketSnippetContainer>
+                <SnippetDropdown items={filteredSnippets} onSelect={handleSnippetSelect} />
+              </TicketSnippetContainer>
             </TicketHeaderInputWrap>
             <EditorWrapper>
               {activeMode === 'edit' ? (
