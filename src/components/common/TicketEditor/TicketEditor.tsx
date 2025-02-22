@@ -202,6 +202,31 @@ const TicketEditor = observer(
     const [lastLogLine, setLastLogLine] = useState('');
     const ui = uiStore;
     const { openDeleteConfirmation } = useDeleteConfirmationModal();
+const TicketEditor = ({ initialAmount }) => {
+  const [amount, setAmount] = useState(initialAmount.toString());
+
+  const formatWithCommas = (value) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const handleChange = (event) => {
+    const rawValue = event.target.value.replace(/,/g, "");
+    if (!isNaN(rawValue) && rawValue !== "") {
+      setAmount(rawValue);
+    }
+  };
+
+  return (
+    <div>
+      <label>Satoshi Amount:</label>
+      <input
+        type="text"
+        value={formatWithCommas(amount)}
+        onChange={handleChange}
+      />
+    </div>
+  );
+};
 
     const groupTickets = useMemo(
       () => phaseTicketStore.getTicketsByGroup(ticketData.ticket_group as string),
