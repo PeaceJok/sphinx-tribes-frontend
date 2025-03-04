@@ -322,7 +322,7 @@ const TicketEditor = ({ initialAmount }) => {
         (_: number, index: number) => latestVersion - index
       );
       setVersions(versionsArray);
-    }, [groupTickets, latestTicket?.version]);
+    }, [groupTickets, latestTicket?.version];
 
     useEffect(() => {
       const isChanged =
